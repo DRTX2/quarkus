@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    // Platform
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-camel-bom:${quarkusPlatformVersion}")
+
+    // Core & CDI
+    implementation 'io.quarkus:quarkus-arc'
+
+    // REST API (RESTEasy Reactive - Recomendado para Quarkus 3.x)
+    implementation 'io.quarkus:quarkus-rest'
+    implementation 'io.quarkus:quarkus-rest-jackson'
+    implementation 'io.quarkus:quarkus-rest-client-jackson'
+
+    // Database & Persistence (CRÍTICO - agregado driver PostgreSQL)
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-flyway' // Migraciones de BD
+
+    // Validation
+    implementation 'io.quarkus:quarkus-hibernate-validator'
+
+    // Security
+    implementation 'io.quarkus:quarkus-smallrye-jwt'
+    implementation 'io.quarkus:quarkus-oidc'
+    implementation 'io.quarkus:quarkus-security'
+
+    // Documentation & Problem Details
+    implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation 'io.quarkiverse.resteasy-problem:quarkus-resteasy-problem:3.21.0'
+
+    // Configuration
+    implementation 'io.quarkus:quarkus-config-yaml'
+
+    // Observability (Health, Metrics, Logging, Tracing)
+    implementation 'io.quarkus:quarkus-smallrye-health'
+    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
+    implementation 'io.quarkus:quarkus-logging-json'
+    implementation 'io.quarkus:quarkus-opentelemetry'
+
+    // Resilience & Performance
+    implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
+    implementation 'io.quarkus:quarkus-cache'
+
+    // Utilities
+    implementation 'io.quarkus:quarkus-scheduler'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-mapstruct'
+    implementation 'io.quarkus:quarkus-cors'
+
+    // Messaging (opcional pero recomendado para apps complejas)
+    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
+
+    // Email
+    implementation 'io.quarkus:quarkus-mailer'
+
+    // Testing
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.quarkus:quarkus-junit5-mockito'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.quarkus:quarkus-test-h2'
+}
+
+group = 'com.drtx.qks'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+    jvmArgs "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+}
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
