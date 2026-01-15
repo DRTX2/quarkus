@@ -10,32 +10,34 @@ repositories {
 
 dependencies {
     // Platform
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-camel-bom:${quarkusPlatformVersion}")
-
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     // Core & CDI
     implementation 'io.quarkus:quarkus-arc'
 
     // REST API (RESTEasy Reactive - Recomendado para Quarkus 3.x)
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-rest-jackson'
-    implementation 'io.quarkus:quarkus-rest-client-jackson'
+//    implementation 'io.quarkus:quarkus-rest-client-jackson' // Si se usan clientes REST para consumir apis esternas
 
-    // Database & Persistence (CRÍTICO - agregado driver PostgreSQL)
+    // Persistence
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
-    implementation 'io.quarkus:quarkus-flyway' // Migraciones de BD
+    implementation 'io.quarkus:quarkus-flyway'
 
     // Validation
     implementation 'io.quarkus:quarkus-hibernate-validator'
 
     // Security
     implementation 'io.quarkus:quarkus-smallrye-jwt'
-    implementation 'io.quarkus:quarkus-oidc'
     implementation 'io.quarkus:quarkus-security'
+    // Keycloak / Auth0 / OAuth2 externo.
+//    implementation 'io.quarkus:quarkus-oidc'
 
-    // Documentation & Problem Details
+    // Documentation
     implementation 'io.quarkus:quarkus-smallrye-openapi'
+
+    // Problem Details
     implementation 'io.quarkiverse.resteasy-problem:quarkus-resteasy-problem:3.21.0'
 
     // Configuration
@@ -43,20 +45,21 @@ dependencies {
 
     // Observability (Health, Metrics, Logging, Tracing)
     implementation 'io.quarkus:quarkus-smallrye-health'
-    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
     implementation 'io.quarkus:quarkus-logging-json'
-    implementation 'io.quarkus:quarkus-opentelemetry'
+//  muy pronto
+//    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
+//    implementation 'io.quarkus:quarkus-opentelemetry'
 
     // Resilience & Performance
-    implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
-    implementation 'io.quarkus:quarkus-cache'
+//    implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
+//    implementation 'io.quarkus:quarkus-cache'
 
     // Utilities
-    implementation 'io.quarkus:quarkus-scheduler'
+//    implementation 'io.quarkus:quarkus-scheduler'
     implementation 'org.apache.camel.quarkus:camel-quarkus-mapstruct'
 
     // Email
-    implementation 'io.quarkus:quarkus-mailer'
+//    implementation 'io.quarkus:quarkus-mailer'
 
     // Testing
     testImplementation 'io.quarkus:quarkus-junit5'
@@ -125,6 +128,7 @@ test {
         loadEnvFile()
     }
 }
+
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-parameters'
