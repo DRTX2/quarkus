@@ -54,10 +54,6 @@ dependencies {
     // Utilities
     implementation 'io.quarkus:quarkus-scheduler'
     implementation 'org.apache.camel.quarkus:camel-quarkus-mapstruct'
-    implementation 'io.quarkus:quarkus-cors'
-
-    // Messaging (opcional pero recomendado para apps complejas)
-    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging-kafka'
 
     // Email
     implementation 'io.quarkus:quarkus-mailer'
@@ -77,9 +73,57 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+// Función para cargar variables de entorno desde archivo .env
+def loadEnvFile() {
+    def envFile = file('.env')
+    if (envFile.exists()) {
+        envFile.readLines().each { line ->
+            if (line && !line.startsWith('#') && line.contains('=')) {
+                def (key, value) = line.split('=', 2)
+                if (key && value) {
+                    // Solo establecer si no existe en el sistema
+                    if (!System.getenv(key)) {
+                        System.setProperty(key, value)
+                    }
+                }
+            }
+        }
+        println "✅ Variables de entorno cargadas desde .env"
+    } else {
+        println "⚠️  Archivo .env no encontrado, usando variables del sistema"
+    }
+}
+
+// Cargar variables antes de cualquier tarea
+gradle.taskGraph.whenReady {
+    loadEnvFile()
+}
+
+// Aplicar variables de entorno a las tareas de Java
+tasks.withType(JavaExec) {
+    doFirst {
+        loadEnvFile()
+        // Pasar system properties como environment variables
+        System.properties.each { key, value ->
+            if (key.toString().startsWith('DB_') ||
+                key.toString().startsWith('SERVER_') ||
+                key.toString().startsWith('APP_') ||
+                key.toString().startsWith('MAIL_') ||
+                key.toString().startsWith('LOG_') ||
+                key.toString().startsWith('CORS_')) {
+                environment key.toString(), value.toString()
+            }
+        }
+    }
+}
+
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
     jvmArgs "--add-opens", "java.base/java.lang=ALL-UNNAMED"
+
+    doFirst {
+        loadEnvFile()
+    }
 }
 compileJava {
     options.encoding = 'UTF-8'

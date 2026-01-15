@@ -1,8 +1,114 @@
-# learning
+# Learning Quarkus - API REST Completa
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Este proyecto es una aplicación completa construida con Quarkus, el Supersonic Subatomic Java Framework.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## 🚀 Inicio Rápido
+
+### Opción 1: Script de inicio automático
+```bash
+./start.sh                    # Usa .env.development por defecto
+./start.sh development        # Especificar entorno
+./start.sh test              # Entorno de testing
+```
+
+### Opción 2: Con scripts específicos
+```bash
+# Cargar configuración y ejecutar
+./scripts/run-dev.sh          # Desarrollo
+./scripts/load-env.sh test    # Test
+```
+
+### Opción 3: Manual
+1. Configura el entorno:
+```bash
+cp .env.development .env      # O edita .env directamente
+```
+
+2. Inicia PostgreSQL:
+```bash
+docker-compose up -d
+```
+
+3. Ejecuta la aplicación:
+```bash
+./gradlew quarkusDev
+```
+
+## ⚙️ Configuración y Variables de Entorno
+
+El proyecto usa archivos `.env` para gestionar la configuración:
+
+```bash
+.env                  # Archivo actual (no subir a git)
+.env.example         # Template con todas las variables
+.env.development     # Preconfigurado para desarrollo
+.env.test           # Preconfigurado para tests
+.env.production     # Template para producción
+```
+
+### Variables Principales
+
+```bash
+# Servidor
+SERVER_PORT=8080
+SERVER_HOST=0.0.0.0
+
+# Base de Datos
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=quarkus_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# Logging
+LOG_LEVEL=DEBUG
+```
+
+Ver **[CONFIGURACION_SECRETOS.md](CONFIGURACION_SECRETOS.md)** para la guía completa.
+
+## 📚 Documentación
+
+### 🎯 Empezar Aquí
+- **[RESUMEN_FINAL_CONFIGURACION.md](RESUMEN_FINAL_CONFIGURACION.md)** - ⭐ **LEE ESTO PRIMERO** - Resumen completo de todo
+- **[README.md](README.md)** - Este archivo (documentación general)
+
+### 🔧 Configuración y Secretos
+- **[RESUMEN_CONFIGURACION.md](RESUMEN_CONFIGURACION.md)** - Resumen rápido de configuración
+- **[CONFIGURACION_SECRETOS.md](CONFIGURACION_SECRETOS.md)** - Guía completa de configuración y seguridad
+- **[EJEMPLOS_ENV.md](EJEMPLOS_ENV.md)** - Ejemplos prácticos de uso de variables de entorno
+
+### 🚀 API y Arquitectura
+- **[RESUMEN_CAMBIOS.md](RESUMEN_CAMBIOS.md)** - Resumen de la arquitectura de la aplicación
+- **[API_USAGE.md](API_USAGE.md)** - Guía de uso de la API REST con ejemplos curl
+
+### 🌐 Documentación Interactiva
+- **Swagger UI**: http://localhost:8080/swagger-ui (cuando la app esté corriendo)
+- **Dev UI**: http://localhost:8080/q/dev (solo en modo desarrollo)
+
+## 🔌 Endpoints Principales
+
+### API REST
+- `GET /api/greeting` - Mensaje de saludo
+- `GET /api/greeting/{name}` - Saludo personalizado
+- `POST /api/greeting` - Crear saludo custom
+- `GET /api/entities` - Listar entidades (CRUD completo)
+
+### Observabilidad
+- `/health` - Health checks
+- `/metrics` - Métricas Prometheus
+- `/swagger-ui` - Documentación interactiva
+
+## 🛠 Tecnologías
+
+- **Quarkus 3.x** - Framework
+- **PostgreSQL** - Base de datos
+- **Flyway** - Migraciones
+- **Hibernate ORM + Panache** - Persistencia
+- **RESTEasy Reactive** - REST API
+- **OpenAPI/Swagger** - Documentación
+- **Micrometer + Prometheus** - Métricas
+
+Si quieres aprender más sobre Quarkus, visita: <https://quarkus.io/>.
 
 ## Running the application in dev mode
 

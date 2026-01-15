@@ -85,9 +85,6 @@ quarkus:
   # ============================================================================
   # HEALTH CHECKS
   # ============================================================================
-  health:
-    extensions:
-      enabled: true
 
   smallrye-health:
     root-path: /health
@@ -109,11 +106,12 @@ quarkus:
   # LOGGING
   # ============================================================================
   log:
-    level: INFO
+    level: ${LOG_LEVEL:INFO}
     console:
-      enable: true
+      enabled: true
       format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n"
-      json: false # Cambiar a true para logs en JSON
+      json:
+        ~: ${LOG_JSON_ENABLED:false} # true para logs en formato JSON
     category:
       "com.drtx.qks":
         level: DEBUG
@@ -145,8 +143,8 @@ quarkus:
   # ============================================================================
   # FAULT TOLERANCE
   # ============================================================================
-  smallrye-fault-tolerance:
-    enabled: true
+  # smallrye-fault-tolerance:
+  #   enabled: true  # Configuraciones específicas de fault tolerance
 
   # ============================================================================
   # KAFKA (Opcional - descomentar si usas)
@@ -171,7 +169,7 @@ quarkus:
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     start-tls: OPTIONAL
-    mock: true # Cambiar a false en producción
+    mock: ${MAIL_MOCK:true} # Cambiar a false en producción
 
 # ==============================================================================
 # CONFIGURACIÓN PERSONALIZADA
