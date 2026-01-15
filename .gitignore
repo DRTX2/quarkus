@@ -34,6 +34,17 @@ nb-configuration.xml
 
 # Local environment
 .env
+.env.local
+.env.*.local
+
+# Archivos .env antiguos (mantener solo .env.dev y .env.prod como plantillas)
+.env.development
+.env.production
+.env.test
+.env.example
+
+# JWT Keys (si decides no subirlas)
+# src/main/resources/privateKey.pem
 
 # Plugin directory
 /.quarkus/cli/plugins/

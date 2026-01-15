@@ -9,16 +9,19 @@ repositories {
 }
 
 dependencies {
-    // Platform
+    // Platform BOM
+    implementation enforcedPlatform("io.quarkus.platform:quarkus-bom:3.30.6")
+
+    // MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
     // Core & CDI
     implementation 'io.quarkus:quarkus-arc'
 
     // REST API (RESTEasy Reactive - Recomendado para Quarkus 3.x)
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-rest-jackson'
-//    implementation 'io.quarkus:quarkus-rest-client-jackson' // Si se usan clientes REST para consumir apis esternas
 
     // Persistence
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
@@ -31,8 +34,6 @@ dependencies {
     // Security
     implementation 'io.quarkus:quarkus-smallrye-jwt'
     implementation 'io.quarkus:quarkus-security'
-    // Keycloak / Auth0 / OAuth2 externo.
-//    implementation 'io.quarkus:quarkus-oidc'
 
     // Documentation
     implementation 'io.quarkus:quarkus-smallrye-openapi'
@@ -46,20 +47,6 @@ dependencies {
     // Observability (Health, Metrics, Logging, Tracing)
     implementation 'io.quarkus:quarkus-smallrye-health'
     implementation 'io.quarkus:quarkus-logging-json'
-//  muy pronto
-//    implementation 'io.quarkus:quarkus-micrometer-registry-prometheus'
-//    implementation 'io.quarkus:quarkus-opentelemetry'
-
-    // Resilience & Performance
-//    implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
-//    implementation 'io.quarkus:quarkus-cache'
-
-    // Utilities
-//    implementation 'io.quarkus:quarkus-scheduler'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-mapstruct'
-
-    // Email
-//    implementation 'io.quarkus:quarkus-mailer'
 
     // Testing
     testImplementation 'io.quarkus:quarkus-junit5'
@@ -92,6 +79,10 @@ def loadEnvFile() {
             }
         }
         println "✅ Variables de entorno cargadas desde .env"
+
+        // Mostrar perfil activo
+        def profile = System.getProperty('QUARKUS_PROFILE') ?: System.getenv('QUARKUS_PROFILE') ?: 'dev'
+        println "📋 Perfil de Quarkus activo: ${profile}"
     } else {
         println "⚠️  Archivo .env no encontrado, usando variables del sistema"
     }
@@ -106,6 +97,11 @@ gradle.taskGraph.whenReady {
 tasks.withType(JavaExec) {
     doFirst {
         loadEnvFile()
+
+        // Obtener perfil de Quarkus
+        def profile = System.getProperty('QUARKUS_PROFILE') ?: System.getenv('QUARKUS_PROFILE') ?: 'dev'
+        systemProperty 'quarkus.profile', profile
+
         // Pasar system properties como environment variables
         System.properties.each { key, value ->
             if (key.toString().startsWith('DB_') ||
@@ -113,7 +109,13 @@ tasks.withType(JavaExec) {
                 key.toString().startsWith('APP_') ||
                 key.toString().startsWith('MAIL_') ||
                 key.toString().startsWith('LOG_') ||
-                key.toString().startsWith('CORS_')) {
+                key.toString().startsWith('CORS_') ||
+                key.toString().startsWith('JWT_') ||
+                key.toString().startsWith('OIDC_') ||
+                key.toString().startsWith('QUARKUS_') ||
+                key.toString().startsWith('METRICS_') ||
+                key.toString().startsWith('HEALTH_') ||
+                key.toString().startsWith('TRACING_')) {
                 environment key.toString(), value.toString()
             }
         }
@@ -126,6 +128,10 @@ test {
 
     doFirst {
         loadEnvFile()
+
+        // Usar perfil dev para tests
+        def profile = System.getProperty('QUARKUS_PROFILE') ?: 'dev'
+        systemProperty 'quarkus.profile', profile
     }
 }
 

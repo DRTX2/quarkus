@@ -1,0 +1,76 @@
+quarkus:
+  # DATABASE - Producción
+  datasource:
+    jdbc:
+      max-size: ${DB_POOL_MAX_SIZE:50}
+      min-size: ${DB_POOL_MIN_SIZE:10}
+
+  # HIBERNATE ORM - Sin logs SQL en producción
+  hibernate-orm:
+    log:
+      sql: false
+      format-sql: false
+    jdbc:
+      statement-batch-size: 20
+
+  # HTTP - Configuración producción
+  http:
+    port: ${SERVER_PORT:8080}
+    host: ${SERVER_HOST:0.0.0.0}
+
+  # SWAGGER UI - Deshabilitado en producción por seguridad
+  swagger-ui:
+    always-include: false
+    enable: false
+
+  # SECURITY - JWT Producción
+  smallrye-jwt:
+    enabled: ${JWT_ENABLED:true}
+
+  # OIDC en producción (si se usa)
+  oidc:
+    enabled: ${OIDC_ENABLED:false}
+    auth-server-url: ${OIDC_AUTH_SERVER_URL}
+    client-id: ${OIDC_CLIENT_ID}
+    credentials:
+      secret: ${OIDC_CLIENT_SECRET}
+
+  # LOGGING - Menos verbose, formato JSON
+  log:
+    level: ${LOG_LEVEL:INFO}
+    console:
+      json:
+        ~: ${LOG_JSON_ENABLED:true} # JSON para herramientas de análisis
+    category:
+      "com.drtx.qks":
+        level: INFO
+      "io.quarkus":
+        level: WARN
+      "org.hibernate":
+        level: WARN
+
+  # MAILER - Real en producción
+  mailer:
+    mock: false
+    from: ${MAIL_FROM}
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    start-tls: REQUIRED
+
+  # OBSERVABILIDAD - Habilitado en producción
+  micrometer:
+    enabled: ${METRICS_ENABLED:true}
+
+  # PACKAGE TYPE - Optimización
+  package:
+    type: uber-jar # O 'fast-jar' dependiendo de tu deployment
+
+# CONFIGURACIÓN PERSONALIZADA - Producción
+app:
+  environment: ${APP_ENV:production}
+  features:
+    registration-enabled: true
+    email-verification-required: true
+    admin-api-enabled: false # Desactivar en prod por seguridad

@@ -1,0 +1,66 @@
+quarkus:
+  # DATABASE - Desarrollo
+  datasource:
+    jdbc:
+      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:quarkus_dev}
+
+  # HIBERNATE ORM - Más verbose en desarrollo
+  hibernate-orm:
+    log:
+      sql: true # Mostrar SQL en desarrollo
+      format-sql: true
+    jdbc:
+      statement-batch-size: 10
+
+  # HTTP - Configuración desarrollo
+  http:
+    port: ${SERVER_PORT:8080}
+
+  # SWAGGER UI - Siempre visible en desarrollo
+  swagger-ui:
+    always-include: true
+    enable: true
+
+  # SECURITY - JWT Desarrollo
+  smallrye-jwt:
+    enabled: ${JWT_ENABLED:true}
+
+  # LOGGING - Más verbose
+  log:
+    level: ${LOG_LEVEL:DEBUG}
+    console:
+      json:
+        ~: false # Sin JSON en desarrollo, más legible
+    category:
+      "com.drtx.qks":
+        level: DEBUG
+      "io.quarkus":
+        level: INFO
+      "org.hibernate":
+        level: DEBUG
+      "org.hibernate.SQL":
+        level: DEBUG
+      "org.hibernate.type.descriptor.sql.BasicBinder":
+        level: TRACE # Ver valores de parámetros SQL
+
+  # DEV SERVICES - Servicios automáticos para desarrollo
+  # Quarkus puede levantar PostgreSQL automáticamente en Docker
+  # Descomentar si quieres usar Dev Services en lugar de tu propia BD
+  # devservices:
+  #   enabled: true
+
+  # LIVE RELOAD
+  live-reload:
+    instrumentation: true
+
+  # MAILER - Mock en desarrollo
+  mailer:
+    mock: ${MAIL_MOCK:true}
+
+# CONFIGURACIÓN PERSONALIZADA - Desarrollo
+app:
+  environment: ${APP_ENV:development}
+  features:
+    registration-enabled: true
+    email-verification-required: false # Desactivar verificación en dev
+    admin-api-enabled: true

@@ -1,50 +1,43 @@
-# ==============================================================================
-# CONFIGURACIÓN GENERAL
-# ==============================================================================
+#   1. Modificar variable QUARKUS_PROFILE en .env (dev o prod)
+#   2. O usar: -Dquarkus.profile=dev/prod
+
 quarkus:
+  # APLICACIÓN
   application:
-    name: learning-quarkus
+    name: ${APP_NAME:learning-quarkus}
     version: 1.0.0-SNAPSHOT
 
-  # ============================================================================
   # DATABASE - PostgreSQL
-  # ============================================================================
   datasource:
     db-kind: postgresql
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
     jdbc:
       url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:quarkus_db}
-      max-size: 20
-      min-size: 5
+      max-size: ${DB_POOL_MAX_SIZE:20}
+      min-size: ${DB_POOL_MIN_SIZE:5}
 
-  # ============================================================================
   # HIBERNATE ORM
-  # ============================================================================
   hibernate-orm:
     database:
       generation: none # Usar Flyway para migraciones
     log:
-      sql: true
+      sql: false
       format-sql: true
     jdbc:
       statement-batch-size: 20
 
-  # ============================================================================
   # FLYWAY - Migraciones de Base de Datos
-  # ============================================================================
   flyway:
     migrate-at-start: true
     baseline-on-migrate: true
     locations: classpath:db/migration
-    baseline-version: 1.0.0
+    baseline-version: 0
 
-  # ============================================================================
   # HTTP & CORS
-  # ============================================================================
   http:
-    port: ${PORT:8080}
-    host: 0.0.0.0
+    port: ${SERVER_PORT:8080}
+    host: ${SERVER_HOST:0.0.0.0}
     cors:
       ~: true
       origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:4200}
@@ -53,9 +46,7 @@ quarkus:
       exposed-headers: Content-Disposition
       access-control-max-age: 24H
 
-  # ============================================================================
   # OPENAPI / SWAGGER UI
-  # ============================================================================
   swagger-ui:
     always-include: true
     path: /swagger-ui
@@ -69,49 +60,49 @@ quarkus:
     info-license-name: Apache 2.0
     info-license-url: https://www.apache.org/licenses/LICENSE-2.0.html
 
-  # ============================================================================
-  # SECURITY - JWT & OIDC
-  # ============================================================================
+  # SECURITY - JWT
   smallrye-jwt:
-    enabled: true
+    enabled: ${JWT_ENABLED:true}
 
+  # JWT Configuration
+  mp:
+    jwt:
+      verify:
+        publickey:
+          location: publicKey.pem
+        issuer: ${JWT_ISSUER:https://learning-quarkus}
+
+  # SECURITY - OIDC (Opcional)
   oidc:
-    enabled: false # Habilitar cuando uses Keycloak/Auth0
+    enabled: ${OIDC_ENABLED:false}
     # auth-server-url: ${OIDC_AUTH_SERVER_URL:https://localhost:8543/realms/quarkus}
     # client-id: ${OIDC_CLIENT_ID:backend-service}
     # credentials:
     #   secret: ${OIDC_CLIENT_SECRET:secret}
 
-  # ============================================================================
   # HEALTH CHECKS
-  # ============================================================================
-
   smallrye-health:
     root-path: /health
     liveness-path: /live
     readiness-path: /ready
     startup-path: /started
 
-  # ============================================================================
   # METRICS - Prometheus
-  # ============================================================================
   micrometer:
-    enabled: true
+    enabled: ${METRICS_ENABLED:true}
     export:
       prometheus:
-        enabled: true
+        enabled: ${METRICS_ENABLED:true}
         path: /metrics
 
-  # ============================================================================
   # LOGGING
-  # ============================================================================
   log:
     level: ${LOG_LEVEL:INFO}
     console:
       enabled: true
       format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n"
       json:
-        ~: ${LOG_JSON_ENABLED:false} # true para logs en formato JSON
+        ~: ${LOG_JSON_ENABLED:false}
     category:
       "com.drtx.qks":
         level: DEBUG
@@ -119,49 +110,13 @@ quarkus:
         level: INFO
       "org.hibernate":
         level: WARN
-      "org.hibernate.SQL":
-        level: DEBUG
 
-  # ============================================================================
-  # CACHE
-  # ============================================================================
-  cache:
-    type: caffeine
-    caffeine:
-      "user-cache":
-        initial-capacity: 10
-        maximum-size: 1000
-        expire-after-write: 10M
-
-  # ============================================================================
   # SCHEDULER
-  # ============================================================================
   scheduler:
     enabled: true
     overdue-grace-period: 60s
 
-  # ============================================================================
-  # FAULT TOLERANCE
-  # ============================================================================
-  # smallrye-fault-tolerance:
-  #   enabled: true  # Configuraciones específicas de fault tolerance
-
-  # ============================================================================
-  # KAFKA (Opcional - descomentar si usas)
-  # ============================================================================
-  # kafka:
-  #   bootstrap:
-  #     servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-
-  # smallrye:
-  #   messaging:
-  #     kafka:
-  #       health:
-  #         enabled: true
-
-  # ============================================================================
   # MAILER
-  # ============================================================================
   mailer:
     from: ${MAIL_FROM:noreply@example.com}
     host: ${MAIL_HOST:localhost}
@@ -169,21 +124,24 @@ quarkus:
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     start-tls: OPTIONAL
-    mock: ${MAIL_MOCK:true} # Cambiar a false en producción
+    mock: ${MAIL_MOCK:true}
 
-# ==============================================================================
+# MICROPROFILE JWT
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: publicKey.pem
+      issuer: ${JWT_ISSUER:https://learning-quarkus}
+
 # CONFIGURACIÓN PERSONALIZADA
-# ==============================================================================
 greeting:
   message: "hello"
 
-# Puedes agregar más configuraciones personalizadas aquí
 app:
-  name: Learning Quarkus
+  name: ${APP_NAME:Learning Quarkus}
   environment: ${APP_ENV:development}
   features:
     registration-enabled: true
     email-verification-required: true
     admin-api-enabled: true
-
-
