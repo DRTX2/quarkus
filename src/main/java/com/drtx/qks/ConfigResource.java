@@ -11,9 +11,6 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.Map;
 
-/**
- * Resource de ejemplo mostrando cómo acceder a la configuración
- */
 @Path("/api/config")
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(name = "Configuration", description = "Configuration information")
@@ -64,7 +61,7 @@ public class ConfigResource {
     public Map<String, String> healthCheck() {
         return Map.of(
             "status", "UP",
-            "environment", appConfig.environment(),
+            "environment", appConfig.environment().name(),
             "timestamp", String.valueOf(System.currentTimeMillis())
         );
     }
