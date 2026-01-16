@@ -34,6 +34,8 @@ dependencies {
     // Security
     implementation 'io.quarkus:quarkus-smallrye-jwt'
     implementation 'io.quarkus:quarkus-security'
+    implementation 'io.quarkus:quarkus-elytron-security-common'
+    implementation 'org.mindrot:jbcrypt:0.4'
 
     // Documentation
     implementation 'io.quarkus:quarkus-smallrye-openapi'

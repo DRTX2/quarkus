@@ -40,6 +40,13 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return userPanacheRepository.find("username", username)
+                .firstResultOptional()
+                .map(userPersistenceMapper::toDomain);
+    }
+
+    @Override
     public Page<User> findAll(UserFilter filter, int page, int size) {
         var query = userPanacheRepository.find(buildQueryString(filter), buildQueryParams(filter));
         query.page(io.quarkus.panache.common.Page.of(page, size));
