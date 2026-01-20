@@ -1,4 +1,4 @@
-package com.drtx.qks;
+package com.drtx.qks.infrastructure.config;
 
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;

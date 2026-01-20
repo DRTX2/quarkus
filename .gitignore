@@ -1,52 +1,99 @@
 # Gradle
 .gradle/
 build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Eclipse
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
 .project
 .classpath
 .settings/
 bin/
 
+# Eclipse
+.metadata
+.recommenders
+
 # IntelliJ
-.idea
-*.ipr
-*.iml
-*.iws
+out/
+.idea_modules/
 
 # NetBeans
-nb-configuration.xml
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# Visual Studio Code
-.vscode
-.factorypath
-
-# OSX
+# OS
 .DS_Store
+Thumbs.db
 
-# Vim
-*.swp
-*.swo
+# Quarkus
+.quarkus/
 
-# patch
-*.orig
-*.rej
+# Logs
+*.log
+logs/
 
-# Local environment
+# Environment Variables - ¡IMPORTANTE! No commitear credenciales
 .env
 .env.local
 .env.*.local
 
-# Archivos .env antiguos (mantener solo .env.dev y .env.prod como plantillas)
-.env.development
-.env.production
-.env.test
-.env.example
+# Mantener los templates
+!.env.development
+!.env.production
 
-# JWT Keys (si decides no subirlas)
+# JWT Keys - No commitear en producción
+# Descomentar estas líneas si usas claves diferentes en cada entorno
 # src/main/resources/privateKey.pem
+# src/main/resources/publicKey.pem
 
-# Plugin directory
-/.quarkus/cli/plugins/
-# TLS Certificates
-.certs/
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Compiled class file
+*.class
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+docker-compose.override.yml
+

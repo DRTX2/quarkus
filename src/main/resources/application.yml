@@ -134,6 +134,24 @@ mp:
         location: publicKey.pem
       issuer: ${JWT_ISSUER:https://learning-quarkus}
 
+# JWT CONFIGURATION
+jwt:
+  duration: ${JWT_DURATION:3600} # 1 hora en segundos
+  refresh-token:
+    duration: ${JWT_REFRESH_DURATION:604800} # 7 días en segundos
+    max-per-user: ${JWT_REFRESH_MAX_PER_USER:5}
+
+# SECURITY CONFIGURATION
+security:
+  max-login-attempts: ${SECURITY_MAX_LOGIN_ATTEMPTS:5}
+  account-lock-duration: ${SECURITY_LOCK_DURATION:900} # 15 minutos en segundos
+  password:
+    min-length: 8
+    require-uppercase: true
+    require-lowercase: true
+    require-digit: true
+    require-special-char: false
+
 # CONFIGURACIÓN PERSONALIZADA
 greeting:
   message: "hello"
@@ -143,5 +161,5 @@ app:
   environment: ${APP_ENV:development}
   features:
     registration-enabled: true
-    email-verification-required: true
+    email-verification-required: false
     admin-api-enabled: true
