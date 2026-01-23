@@ -1,7 +1,7 @@
 package com.drtx.qks.application.usecase;
 
 import com.drtx.qks.domain.model.User;
-import com.drtx.qks.domain.ports.in.UserUseCase;
+import com.drtx.qks.domain.ports.in.user.UserUseCase;
 import com.drtx.qks.domain.ports.out.persistence.UserRepositoryPort;
 import com.drtx.qks.domain.valueObjects.Page;
 import com.drtx.qks.domain.valueObjects.UserFilter;
@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserUseCaseImpl implements UserUseCase {
@@ -27,6 +28,11 @@ public class UserUseCaseImpl implements UserUseCase {
     }
 
     @Override
+    public Optional<User> findByUuid(UUID uuid) {
+        return userRepository.findByUuid(uuid);
+    }
+
+    @Override
     public User update(User user) {
         return userRepository.save(user);
     }
@@ -34,5 +40,12 @@ public class UserUseCaseImpl implements UserUseCase {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        Optional<User> userOpt = userRepository.findByUuid(uuid);
+        if(userOpt.isEmpty()) throw new IllegalArgumentException("User not found with uuid: " + uuid);
+        userOpt.ifPresent(user -> userRepository.deleteById(user.getId()));
     }
 }

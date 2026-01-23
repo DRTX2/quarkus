@@ -2,27 +2,38 @@ package com.drtx.qks.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 public class User {
     private Long id;
+    private UUID uuid;
     private String username;
     private String email;
     private String passwordHash;
     private Set<String> roles;
     private boolean enabled;
+    private boolean locked;
+    private int failedLoginAttempts;
+    private LocalDateTime lastLoginAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public User() {
     }
 
-    public User(Long id, String username, String email, String passwordHash, Set<String> roles, boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(Long id, UUID uuid,String username, String email, String passwordHash, Set<String> roles,
+                boolean enabled, boolean locked, int failedLoginAttempts, LocalDateTime lastLoginAt,
+                LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.uuid=uuid;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.roles = roles;
         this.enabled = enabled;
+        this.locked=locked;
+        this.failedLoginAttempts = failedLoginAttempts;
+        this.lastLoginAt = lastLoginAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -33,6 +44,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getUsername() {
@@ -73,6 +92,30 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
+    }
+
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
     }
 
     public LocalDateTime getCreatedAt() {

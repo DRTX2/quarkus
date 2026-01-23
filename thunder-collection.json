@@ -1,0 +1,205 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Learning Quarkus - Auth API",
+  "dateExported": "2026-01-16",
+  "version": "1.1",
+  "folders": [
+    {
+      "name": "Authentication",
+      "requests": [
+        {
+          "name": "Register",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/auth/register",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\"\n}"
+          },
+          "tests": []
+        },
+        {
+          "name": "Login",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/auth/login",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"usernameOrEmail\": \"admin\",\n  \"password\": \"Admin@123\"\n}"
+          },
+          "tests": [
+            "// Save access token",
+            "const response = JSON.parse(responseBody);",
+            "tc.setVar('accessToken', response.accessToken);",
+            "tc.setVar('refreshToken', response.refreshToken);"
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/auth/refresh",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+          },
+          "tests": [
+            "const response = JSON.parse(responseBody);",
+            "tc.setVar('accessToken', response.accessToken);",
+            "tc.setVar('refreshToken', response.refreshToken);"
+          ]
+        },
+        {
+          "name": "Get Current User",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/auth/me",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ],
+          "tests": []
+        },
+        {
+          "name": "Change Password",
+          "method": "PUT",
+          "url": "{{baseUrl}}/api/auth/change-password",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "type": "json",
+            "raw": "{\n  \"currentPassword\": \"Admin@123\",\n  \"newPassword\": \"NewAdmin@123\"\n}"
+          },
+          "tests": []
+        },
+        {
+          "name": "Logout",
+          "method": "POST",
+          "url": "{{baseUrl}}/api/auth/logout",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ],
+          "tests": []
+        },
+        {
+          "name": "Admin Endpoint (Protected)",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/auth/admin",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ],
+          "tests": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "requests": [
+        {
+          "name": "List Users",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/users?page=0&size=20",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ],
+          "tests": []
+        },
+        {
+          "name": "Get User by UUID",
+          "method": "GET",
+          "url": "{{baseUrl}}/api/users/{{userUuid}}",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{accessToken}}"
+            }
+          ],
+          "tests": []
+        }
+      ]
+    },
+    {
+      "name": "Health & Metrics",
+      "requests": [
+        {
+          "name": "Health - All",
+          "method": "GET",
+          "url": "{{baseUrl}}/q/health",
+          "tests": []
+        },
+        {
+          "name": "Health - Liveness",
+          "method": "GET",
+          "url": "{{baseUrl}}/q/health/live",
+          "tests": []
+        },
+        {
+          "name": "Health - Readiness",
+          "method": "GET",
+          "url": "{{baseUrl}}/q/health/ready",
+          "tests": []
+        },
+        {
+          "name": "Metrics",
+          "method": "GET",
+          "url": "{{baseUrl}}/q/metrics",
+          "tests": []
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "name": "Development",
+      "variables": {
+        "baseUrl": "http://localhost:8080",
+        "accessToken": "",
+        "refreshToken": "",
+        "userUuid": ""
+      }
+    },
+    {
+      "name": "Production",
+      "variables": {
+        "baseUrl": "https://api.yourdomain.com",
+        "accessToken": "",
+        "refreshToken": "",
+        "userUuid": ""
+      }
+    }
+  ]
+}
+

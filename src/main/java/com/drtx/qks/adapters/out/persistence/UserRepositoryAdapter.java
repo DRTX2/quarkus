@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
 public class UserRepositoryAdapter implements UserRepositoryPort {
@@ -29,6 +30,12 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Optional<User> findById(Long id) {
         return userPanacheRepository.findByIdOptional(id)
+                .map(userPersistenceMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByUuid(UUID uuid){
+        return userPanacheRepository.findByUuid(uuid)
                 .map(userPersistenceMapper::toDomain);
     }
 
@@ -103,5 +110,8 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         userPanacheRepository.deleteById(id);
     }
 
-
+    @Override
+    public void deleteByUuid(UUID uuid) {
+        userPanacheRepository.delete("uuid", uuid);
+    }
 }

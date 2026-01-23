@@ -6,5 +6,4 @@ public record UserFilter (
     String role,
     Boolean enabled
 ){
-
 }
