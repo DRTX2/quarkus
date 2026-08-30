@@ -80,23 +80,26 @@ Ver **[CONFIGURACION_SECRETOS.md](CONFIGURACION_SECRETOS.md)** para la guía com
 ### 🚀 API y Arquitectura
 - **[RESUMEN_CAMBIOS.md](RESUMEN_CAMBIOS.md)** - Resumen de la arquitectura de la aplicación
 - **[API_USAGE.md](API_USAGE.md)** - Guía de uso de la API REST con ejemplos curl
+- **[OPENAPI_SCALAR.md](OPENAPI_SCALAR.md)** - Contrato OpenAPI y documentación interactiva
 
 ### 🌐 Documentación Interactiva
+- **Scalar**: http://localhost:8080/scalar/ (cuando la app esté corriendo)
 - **Swagger UI**: http://localhost:8080/swagger-ui (cuando la app esté corriendo)
+- **OpenAPI**: http://localhost:8080/q/openapi
 - **Dev UI**: http://localhost:8080/q/dev (solo en modo desarrollo)
 
 ## 🔌 Endpoints Principales
 
 ### API REST
-- `GET /api/greeting` - Mensaje de saludo
-- `GET /api/greeting/{name}` - Saludo personalizado
-- `POST /api/greeting` - Crear saludo custom
-- `GET /api/entities` - Listar entidades (CRUD completo)
+- `/api/auth` - Registro, login, tokens y cuenta autenticada
+- `/api/users` - Administración de usuarios (requiere rol ADMIN)
 
 ### Observabilidad
 - `/health` - Health checks
 - `/metrics` - Métricas Prometheus
+- `/scalar/` - Documentación interactiva con Scalar
 - `/swagger-ui` - Documentación interactiva
+- `/q/openapi` - Contrato OpenAPI
 
 ## 🛠 Tecnologías
 
@@ -105,7 +108,7 @@ Ver **[CONFIGURACION_SECRETOS.md](CONFIGURACION_SECRETOS.md)** para la guía com
 - **Flyway** - Migraciones
 - **Hibernate ORM + Panache** - Persistencia
 - **RESTEasy Reactive** - REST API
-- **OpenAPI/Swagger** - Documentación
+- **SmallRye OpenAPI, Scalar y Swagger UI** - Documentación
 - **Micrometer + Prometheus** - Métricas
 
 Si quieres aprender más sobre Quarkus, visita: <https://quarkus.io/>.
@@ -185,5 +188,4 @@ The Quarkus application configuration is located in `src/main/resources/applicat
 Create your first JPA entity
 
 [Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
 

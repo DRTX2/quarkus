@@ -80,6 +80,14 @@ public class UserEntity {
         this.id = id;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public String getUsername() {
         return username;
     }

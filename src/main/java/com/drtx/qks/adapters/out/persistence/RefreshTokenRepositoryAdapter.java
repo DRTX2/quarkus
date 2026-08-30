@@ -3,12 +3,16 @@ package com.drtx.qks.adapters.out.persistence;
 import com.drtx.qks.domain.model.RefreshToken;
 import com.drtx.qks.domain.ports.out.persistence.RefreshTokenRepositoryPort;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
 public class RefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort {
+
+    @Inject
+    UserPanacheRepository userPanacheRepository;
 
     @Override
     @Transactional
@@ -36,7 +40,7 @@ public class RefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort
             return Optional.empty();
         }
 
-        UserEntity userEntity = UserEntity.findById(entity.userId);
+        UserEntity userEntity = userPanacheRepository.findById(entity.userId);
         if (userEntity == null) {
             return Optional.empty();
         }
@@ -76,10 +80,8 @@ public class RefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort
     }
 
     private Long getUserIdByUuid(UUID uuid) {
-        UserEntity user = UserEntity.find("uuid", uuid).firstResult();
-        if (user == null) {
-            throw new RuntimeException("Usuario no encontrado con UUID: " + uuid);
-        }
+        UserEntity user = userPanacheRepository.findByUuid(uuid)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con UUID: " + uuid));
         return user.getId();
     }
 }
