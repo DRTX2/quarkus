@@ -209,7 +209,7 @@ http://localhost:8080/swagger-ui
 ./gradlew build
 
 # Uber JAR (todo en uno)
-./gradlew build -Dquarkus.package.type=uber-jar
+./gradlew build -Dquarkus.package.jar.enabled=true -Dquarkus.package.jar.type=uber-jar
 
 # Ejecutar
 java -jar build/quarkus-app/quarkus-run.jar

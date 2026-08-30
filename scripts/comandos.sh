@@ -109,7 +109,7 @@ $ ./scripts/switch-profile.sh prod
 $ nano .env
 
 # 3. Build uber-jar
-$ ./gradlew build -Dquarkus.package.type=uber-jar
+$ ./gradlew build -Dquarkus.package.jar.enabled=true -Dquarkus.package.jar.type=uber-jar
 
 # 4. Ejecutar
 $ java -jar build/quarkus-app/quarkus-run.jar

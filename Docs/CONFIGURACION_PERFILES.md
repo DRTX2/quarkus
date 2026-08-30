@@ -76,7 +76,7 @@ cp .env.prod .env
 # QUARKUS_PROFILE=prod
 
 # Compilar para producción
-./gradlew build -Dquarkus.package.type=uber-jar
+./gradlew build -Dquarkus.package.jar.enabled=true -Dquarkus.package.jar.type=uber-jar
 
 # Ejecutar
 java -jar build/quarkus-app/quarkus-run.jar
@@ -202,13 +202,13 @@ Flyway se ejecuta automáticamente al iniciar la aplicación.
 ./gradlew test
 
 # Producción (uber-jar)
-./gradlew build -Dquarkus.package.type=uber-jar
+./gradlew build -Dquarkus.package.jar.enabled=true -Dquarkus.package.jar.type=uber-jar
 
 # Producción (fast-jar, default)
 ./gradlew build
 
 # Native (requiere GraalVM)
-./gradlew build -Dquarkus.package.type=native
+./gradlew build -Dquarkus.native.enabled=true
 ```
 
 ## 🐳 Docker
