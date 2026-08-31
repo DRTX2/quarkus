@@ -163,3 +163,11 @@ app:
     registration-enabled: true
     email-verification-required: false
     admin-api-enabled: true
+
+# KUBECHAOS AIOPS
+chaos:
+  monkey:
+    enabled: ${CHAOS_MONKEY_ENABLED:false}
+    cron: ${CHAOS_MONKEY_CRON:0 0 2 * * ?} # Por defecto a las 2 AM todos los días
+    target-namespace: ${CHAOS_TARGET_NAMESPACE:production}
+    target-deployment: ${CHAOS_TARGET_DEPLOYMENT:order-service}

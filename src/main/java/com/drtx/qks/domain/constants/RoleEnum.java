@@ -2,7 +2,8 @@ package com.drtx.qks.domain.constants;
 
 public enum RoleEnum {
     USER("USER"),
-    ADMIN("ADMIN");
+    ADMIN("ADMIN"),
+    SRE_ADMIN("SRE_ADMIN");
 
     private final String roleName;
 
